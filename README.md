@@ -1,448 +1,616 @@
-# 🦊 Lilo Tester
+# 🦊 Lilo Tester v4.5.1
 
 <p align="center">
-  <strong>Web Automation Testing Suite</strong><br>
-  <em>Fast. Minimal. Straight to the point.</em>
+
+**Advanced Web Automation & Security Testing Suite**
+
+*Authenticated Exploration • Micro-Interaction Testing • Performance Analytics • Security Audit*
+
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/python-3.8+-blue" />
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" />
-  <img src="https://img.shields.io/badge/browser-Playwright%20Chromium-purple" />
-  <img src="https://img.shields.io/badge/license-MIT-green" />
+
+![Python](https://img.shields.io/badge/python-3.8+-blue)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
+![Browser](https://img.shields.io/badge/browser-Playwright%20Chromium-purple)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-4.5.1-orange)
+
+</p>
+
+<p align="center">
+
+🔐 Authenticate → 🗺️ Explore → 🧪 Test → 🛡️ Audit → ⚡ Analyze → 📄 Report
+
 </p>
 
 ---
 
-<p align="center">
-  <img src="docs/lilotester.gif" alt="Lilo Tester Demo" width="900"/>
-</p>
+# 📑 Table of Contents
 
-<p align="center">
-  <em>Scan → Analyze → Report. Fully automated.</em>
-</p>
-
----
-
-## 🚀 Overview
-
-**Lilo Tester** is a lightweight CLI tool that scans any browser-rendered website and generates a complete diagnostic report.
-
-It works with websites built using Laravel, React, Next.js, Vue, WordPress, Django, plain HTML, or any other stack — as long as the website can be opened in a browser.
-
-No complex setup.  
-No config files.  
-No unnecessary noise.  
-
-Just run it.
+* [Overview](#-overview)
+* [Features](#-features)
+* [Quick Start](#-quick-start)
+* [Installation](#-installation)
+* [Usage Guide](#-usage-guide)
+* [Authentication](#-authentication)
+* [Credential Manager](#-credential-manager)
+* [Performance Testing](#-performance-testing)
+* [Security Audit](#-security-audit)
+* [Micro-Interaction Testing](#-micro-interaction-testing)
+* [CLI Reference](#-cli-reference)
+* [Output Structure](#-output-structure)
+* [Report Details](#-report-details)
+* [Troubleshooting](#-troubleshooting)
+* [FAQ](#-faq)
+* [License](#-license)
 
 ---
 
-## ⚡ What You Get
+# 🚀 Overview
 
-- ⚡ **Page load performance**
-- 🔍 **SEO & meta validation**
-- 🔗 **Broken internal link detection**
-- 🐞 **Console error tracking**
-- 🌐 **Network error detection**
-- 🛡 **Security headers audit**
-- ♿ **Basic accessibility checks**
-- 🧪 **Safe form testing**
-- 📱 **Responsive testing**
-- 📸 **Multi-device screenshots**
-- 📄 **HTML + JSON report**
+Lilo Tester is a comprehensive CLI toolkit designed for browser-rendered applications.
 
----
+It combines:
 
-## 🎯 Scan Modes
+* Authenticated dashboard exploration
+* Micro-interaction testing
+* Advanced performance analytics
+* Security auditing
+* Screenshot capture
+* Rich HTML reporting
 
-Lilo Tester supports two scan modes:
+into a single command.
 
-| Mode | Description |
-| ---- | ----------- |
-| `quick` | Fast scan for the main page |
-| `full` | Deeper scan across internal pages |
+Supports virtually any modern stack:
 
-If you run Lilo Tester without choosing a mode, it will ask you:
+```text
+Laravel • Filament • Nova • Livewire • Inertia
 
-```bash
-liloit -u example.com
+React • Next.js • Remix
+
+Vue • Nuxt • Quasar
+
+WordPress • Django • Rails
+
+SPA • Static HTML
 ```
 
+> No configuration.
+>
+> One command.
+>
+> Full report.
+
 ---
 
-## ⚡ Quick Start
+# ⚡ Features
+
+## 🔐 Authentication & Exploration
+
+| Feature             | Description                                       |
+| ------------------- | ------------------------------------------------- |
+| Flexible Login      | Username + Password, Password-only, Direct Access |
+| Auto Detect Login   | Finds login pages automatically                   |
+| Custom Login URL    | Specify exact login path                          |
+| Dashboard Explorer  | Discovers menus and internal pages                |
+| Session Persistence | Reuse browser sessions                            |
+| Safe Mode           | Blocks POST / PUT / DELETE                        |
+
+---
+
+## 🧪 Micro-Interaction Testing
+
+| Test          | Validation               |
+| ------------- | ------------------------ |
+| 🔍 Search     | Query execution          |
+| 📊 Filters    | Option switching         |
+| 📄 Pagination | Next/page navigation     |
+| ↕️ Sort       | Sortable columns         |
+| 📑 Tabs       | Tab switching            |
+| 🪟 Modal      | Open / Close             |
+| 📋 Dropdown   | Toggle menus             |
+| 🎵 Accordion  | Expand / Collapse        |
+| 📝 Forms      | Validation               |
+| 📅 Datepicker | Input testing            |
+| ☑️ Checkbox   | State changes            |
+| 🔽 Select     | Option selection         |
+| ✏️ Editor     | Rich text interaction    |
+| 📎 Upload     | Upload element detection |
+| 📊 Tables     | Rows & columns           |
+
+---
+
+## ⚡ Performance Analytics
+
+| Feature              | Description            |
+| -------------------- | ---------------------- |
+| Performance Score    | 0–100 grading          |
+| Core Web Vitals      | TTFB, FCP, LCP, CLS    |
+| Resource Analysis    | JS, CSS, Fonts, Images |
+| Slowest Assets       | Top 15                 |
+| Largest Assets       | Top 15                 |
+| Third Party Analysis | External domains       |
+| DOM Complexity       | Node count & depth     |
+| Recommendations      | Optimization hints     |
+
+---
+
+## 🛡 Security Audit
+
+| Test              | Coverage             |
+| ----------------- | -------------------- |
+| Headers           | 8 security headers   |
+| XSS               | Reflected & DOM      |
+| SQLi              | Error based          |
+| CSRF              | Missing token checks |
+| Sensitive Files   | 30+ paths            |
+| Cookies           | Secure flags         |
+| CORS              | Reflection issues    |
+| Clickjacking      | Frame protection     |
+| SSL               | HTTPS validation     |
+| Forms             | Secure attributes    |
+| Disclosure        | Secrets detection    |
+| Directory Listing | Common directories   |
+
+---
+
+## 📸 Reporting
+
+| Feature           | Description        |
+| ----------------- | ------------------ |
+| Screenshots       | Full page captures |
+| Security Evidence | Critical findings  |
+| Error Screenshots | Debugging          |
+| HTML Report       | Interactive        |
+| JSON Report       | Machine readable   |
+| Security Score    | 0–100              |
+
+---
+
+# ⚡ Quick Start
+
+Clone repository
 
 ```bash
 git clone https://github.com/yourusername/lilo-tester.git
+
 cd lilo-tester
+```
 
+Install dependencies
+
+```bash
 pip install -r requirements.txt
-python -m playwright install chromium
 
+python -m playwright install chromium
+```
+
+Run scanner
+
+```bash
 python lilo_tester.py -u https://example.com
 ```
 
----
-
-## 🦊 Use as `liloit`
-
-Install it locally as a CLI command:
+Install globally
 
 ```bash
 pip install -e .
-```
 
-Then run:
-
-```bash
-liloit -u example.com
+liloit -u https://example.com
 ```
 
 ---
 
-## 🧠 Usage
-
-### Quick Scan
-
-```bash
-liloit -u example.com --mode quick
-```
-
-### Full Scan
-
-```bash
-liloit -u example.com --mode full
-```
-
-### Full Scan with limits
-
-```bash
-liloit -u example.com --mode full --max-pages 30 --depth 2
-```
-
-### Test specific devices
-
-```bash
-liloit -u example.com -d desktop mobile
-```
-
-### Show browser while testing
-
-```bash
-liloit -u example.com --no-headless
-```
-
-### Run without opening report automatically
-
-```bash
-liloit -u example.com --no-open-report
-```
-
-### Disable safe form test
-
-```bash
-liloit -u example.com --no-form-test
-```
-
----
-
-## ⚙️ CLI Options
-
-| Flag | Description |
-| ---- | ----------- |
-| `-u, --url` | Target website URL |
-| `--mode` | Scan mode: `quick` or `full` |
-| `--full-scan` | Shortcut for full scan |
-| `--max-pages` | Maximum pages for full scan |
-| `--depth` | Internal crawl depth |
-| `-d, --devices` | Devices to test: desktop, tablet, mobile |
-| `-o, --output` | Output folder |
-| `--no-headless` | Show browser window while testing |
-| `--no-form-test` | Disable safe dummy form validation |
-| `--no-open-report` | Do not open report automatically |
-
----
-
-## 🧪 Safe Form Testing
-
-Lilo Tester can safely test forms by filling fields with dummy data and checking validation rules.
-
-It is designed to avoid real submissions, so it will not intentionally create bookings, orders, messages, or accounts.
-
-It checks:
-
-- required fields
-- invalid inputs
-- missing labels
-- broken form validation
-- fields that fail after dummy fill
-- forms without submit buttons
-
-Disable it anytime:
-
-```bash
-liloit -u example.com --no-form-test
-```
-
----
-
-## 📦 Installation
+# 📦 Installation
 
 <details>
+
 <summary>🪟 Windows</summary>
 
-Install Python from [python.org](https://www.python.org/downloads/).
-
-During installation, make sure to enable:
-
-```text
-Add Python to PATH
-```
-
-Then run:
-
-```bash
+```powershell
 git clone https://github.com/yourusername/lilo-tester.git
+
 cd lilo-tester
 
 pip install -r requirements.txt
+
 python -m playwright install chromium
 
 pip install -e .
-liloit -u example.com
-```
 
-If `python` is not recognized, use:
-
-```bash
-py -m pip install -r requirements.txt
-py -m playwright install chromium
-py lilo_tester.py -u example.com
+liloit -u https://example.com
 ```
 
 </details>
 
----
-
 <details>
+
 <summary>🍎 macOS</summary>
 
 ```bash
 brew install python@3.12
 
 git clone https://github.com/yourusername/lilo-tester.git
+
 cd lilo-tester
 
 pip3 install -r requirements.txt
+
 python3 -m playwright install chromium
 
 pip3 install -e .
-liloit -u example.com
-```
 
-Fallback:
-
-```bash
-python3 lilo_tester.py -u example.com
+liloit -u https://example.com
 ```
 
 </details>
 
----
-
 <details>
+
 <summary>🐧 Linux</summary>
 
 ```bash
 sudo apt update
-sudo apt install python3 python3-pip
+
+sudo apt install python3 python3-pip -y
 
 git clone https://github.com/yourusername/lilo-tester.git
+
 cd lilo-tester
 
 pip install -r requirements.txt
+
 python3 -m playwright install chromium
+
 python3 -m playwright install-deps chromium
 
 pip install -e .
-liloit -u example.com
-```
 
-Fallback:
-
-```bash
-python3 lilo_tester.py -u example.com
+liloit -u https://example.com
 ```
 
 </details>
 
 ---
 
-## 📂 Output
+# 🧠 Usage Guide
 
-Every scan generates a timestamped report folder:
+## Scan Modes
+
+| Mode        | Auth | Exploration | Security | Performance | Best For         |
+| ----------- | ---- | ----------- | -------- | ----------- | ---------------- |
+| dashboard   | ✅    | 50 Pages    | ✅        | ✅           | ERP / CRM        |
+| public      | ❌    | 10 Pages    | ✅        | ✅           | Websites         |
+| performance | ❌    | Limited     | ❌        | Full        | Optimization     |
+| security    | ❌    | ❌           | Full     | ❌           | Security Testing |
+| quick       | ❌    | ❌           | ❌        | Basic       | Health Checks    |
+
+Examples
 
 ```bash
+liloit -u https://erp.company.com
+
+liloit -u https://blog.example.com --no-login
+
+liloit -u https://shop.example.com --mode performance
+
+liloit -u https://example.com --mode security
+
+liloit -u https://example.com --mode quick
+```
+
+---
+
+# 🔐 Authentication
+
+Auto discovery works by:
+
+* password field detection
+* login link discovery
+* common path enumeration
+
+Examples
+
+```bash
+liloit -u https://app.company.com
+```
+
+Custom login
+
+```bash
+liloit -u https://app.company.com \
+--login-url /admin/login
+```
+
+Localhost
+
+```bash
+liloit -u http://127.0.0.1:8000 \
+--login-url /login
+```
+
+Supported login types
+
+| Type                | Description             |
+| ------------------- | ----------------------- |
+| Username + Password | Standard authentication |
+| Password Only       | Admin panels            |
+| Direct Access       | Already authenticated   |
+
+---
+
+# 💾 Credential Manager
+
+Stored at
+
+```text
+~/.lilo_tester/credentials.json
+```
+
+Supports:
+
+* multiple accounts
+* labels
+* interactive selection
+* auto detection
+
+---
+
+# ⚡ Performance Testing
+
+```bash
+liloit -u https://example.com --mode performance
+```
+
+Includes
+
+* Performance Score
+* Web Vitals
+* Resource Analysis
+* Largest Assets
+* Slowest Assets
+* Third Party Impact
+* Recommendations
+
+---
+
+# 🛡 Security Audit
+
+Run security scan
+
+```bash
+liloit -u https://example.com --mode security
+```
+
+Findings include
+
+* severity
+* evidence
+* affected URL
+* screenshot
+* remediation advice
+
+---
+
+# 🧪 Micro-Interaction Testing
+
+Executed automatically in:
+
+* dashboard mode
+* public mode
+
+Includes over **15 interaction tests**.
+
+```bash
+liloit -u https://erp.company.com
+```
+
+---
+
+# ⚙ CLI Reference
+
+| Flag          | Description           |
+| ------------- | --------------------- |
+| -u            | URL                   |
+| -m            | Mode                  |
+| -l            | Login URL             |
+| -o            | Output Folder         |
+| --headless    | Headless browser      |
+| --max-pages   | Exploration limit     |
+| --no-login    | Disable auth          |
+| --no-security | Disable security      |
+| --no-open     | Prevent report launch |
+
+Examples
+
+```bash
+liloit -u https://erp.company.com
+
+liloit -u https://erp.company.com --login-url /admin/login
+
+liloit -u https://example.com --mode security
+
+liloit -u https://example.com --mode performance
+
+liloit -u https://example.com --mode quick
+```
+
+---
+
+# 📂 Output Structure
+
+```text
 lilo_reports/
-└── report_YYYY-MM-DD_HH-MM-SS/
-    ├── report.html
-    ├── report.json
-    └── screenshots/
-        ├── desktop_YYYY-MM-DD_HH-MM-SS.png
-        ├── tablet_YYYY-MM-DD_HH-MM-SS.png
-        ├── mobile_YYYY-MM-DD_HH-MM-SS.png
-        └── fullpage_YYYY-MM-DD_HH-MM-SS.png
+
+├── report_YYYY-MM-DD/
+
+│ ├── report.html
+
+│ ├── report.json
+
+│ ├── screenshots/
+
+│ │ ├── pages/
+
+│ │ ├── security/
+
+│ │ └── errors/
+
+│ └── error_screenshots/
+
+├── sessions/
+
+│ └── auth_session.json
+
+└── screenshots/
+
+~/.lilo_tester/
+
+└── credentials.json
 ```
-
-Open:
-
-```bash
-report.html
-```
-
-in your browser.
 
 ---
 
-## 📊 Report Details
+# 📊 Report Details
 
-The HTML report includes collapsible details for issues such as:
+### HTML Report
 
-- broken internal links
-- source page of broken links
-- HTTP status codes
-- console errors
-- network failures
-- missing SEO tags
-- security header warnings
-- accessibility issues
-- form validation problems
-- screenshot capture results
+* Performance
+* Security
+* Screenshots
+* Exploration
+* Micro Tests
+* Errors
+
+### JSON Report
+
+Contains
+
+* test results
+* metrics
+* findings
+* APIs
+* stack traces
+* navigation graph
 
 ---
 
-## 🛠 Troubleshooting
+# 🔧 Troubleshooting
 
-### `liloit` command not found
-
-Run:
+### Command not found
 
 ```bash
 pip install -e .
 ```
 
-Then try again:
-
-```bash
-liloit -u example.com
-```
-
-Fallback:
-
-```bash
-python lilo_tester.py -u example.com
-```
-
----
-
-### Playwright browser missing
+### Playwright missing
 
 ```bash
 python -m playwright install chromium
 ```
 
-On Linux:
+Linux
 
 ```bash
 python -m playwright install-deps chromium
 ```
 
----
-
-### Website gets stuck or loads forever
-
-Try quick mode first:
+### Login issues
 
 ```bash
-liloit -u example.com --mode quick
+liloit -u https://app.com \
+--login-url /login
 ```
 
-Or show the browser:
+### Performance issues
 
 ```bash
-liloit -u example.com --mode quick --no-headless
+liloit -u https://example.com --max-pages 10
 ```
 
----
-
-### Screenshots are missing
-
-Run:
+### Reset credentials
 
 ```bash
-liloit -u example.com --mode quick --no-headless
-```
-
-Then check:
-
-```bash
-lilo_reports/
-```
-
-If needed, use the direct Python fallback:
-
-```bash
-python lilo_tester.py -u example.com --mode quick --no-headless
+rm ~/.lilo_tester/credentials.json
 ```
 
 ---
 
-### Full scan is too slow
+# ❓ FAQ
 
-Limit the scan:
+### Does it modify data?
+
+No.
+
+Safe Mode blocks:
+
+* POST
+* PUT
+* PATCH
+* DELETE
+
+Only GET requests are allowed.
+
+---
+
+### CI/CD Support?
+
+Yes.
 
 ```bash
-liloit -u example.com --mode full --max-pages 10 --depth 1
+liloit -u https://staging.example.com \
+--headless \
+--no-open \
+--mode quick
 ```
 
 ---
 
-### Python 3.14 issues
+### Supported Applications?
 
-If some packages fail on Python 3.14, use Python 3.12.
+Anything browser rendered.
 
-Recommended:
-
-```bash
-python --version
-```
-
-Best stable target:
-
-```text
-Python 3.12
-```
-
----
-
-## 🧪 Why Lilo Tester?
-
-Most testing tools are:
-
-- Overcomplicated
-- Noisy
-- Slow
-- Too much setup
-
-Lilo Tester is:
-
-> **Focused. Fast. Practical.**
-
-Made for quick website diagnostics without the usual setup pain.
+* Laravel
+* Filament
+* React
+* Next.js
+* Vue
+* Nuxt
+* WordPress
+* Django
+* ERP
+* CRM
+* Admin Panels
 
 ---
 
-## 🪪 License
+### Credential Safety?
+
+Credentials are stored locally.
+
+For production environments consider:
+
+* Vault
+* Secrets Manager
+* Environment Variables
+
+---
+
+# 🪪 License
 
 MIT License
+
+Copyright (c) 2024–2026 Lilo Tester
+
+---
+
+<p align="center">
+
+**🦊 Lilo Tester v4.5.1**
+
+*Authenticate • Explore • Test • Audit • Analyze • Report*
+
+<sub>Made with ❤️ for developers who want things to just work.</sub>
+
+</p>
