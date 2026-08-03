@@ -1,0 +1,322 @@
+================================================================================
+   LILO TESTER v5.0.0 — Penjelasan Program
+================================================================================
+
+--------------------------------------------------------------------------------
+APA ITU LILO TESTER?
+--------------------------------------------------------------------------------
+
+Lilo Tester adalah sebuah alat keamanan web (security scanner) yang bekerja
+secara otomatis. Tugasnya adalah memeriksa sebuah website atau web aplikasi
+untuk menemukan celah keamanan, masalah performa, dan kesalahan teknis lainnya,
+semuanya dengan satu perintah terminal.
+
+Lilo Tester berjalan 100% di lokal (komputer kamu sendiri). Tidak ada API key,
+tidak ada data yang dikirim ke server pihak ketiga, dan tidak ada biaya
+berlangganan.
+
+
+--------------------------------------------------------------------------------
+UNTUK SIAPA?
+--------------------------------------------------------------------------------
+
+  - Developer yang ingin memeriksa keamanan proyek sebelum deploy ke produksi
+  - Security researcher yang melakukan penetration testing (pentest)
+  - Tim QA yang ingin memverifikasi kerentanan secara otomatis
+  - Siapa saja yang butuh laporan keamanan web yang lengkap dan cepat
+
+
+--------------------------------------------------------------------------------
+DIBANGUN MENGGUNAKAN APA?
+--------------------------------------------------------------------------------
+
+Bahasa Pemrograman:
+  - Python 3.10+
+
+Library Utama:
+  - Playwright     : Mengontrol browser Chromium secara otomatis (headless/GUI)
+  - Rich           : Menampilkan output terminal yang berwarna dan terformat
+  - aiohttp        : Melakukan HTTP request asinkron (untuk OOB server lokal)
+  - Jinja2         : Merender template HTML untuk laporan
+  - Pillow         : Memproses dan menambahkan watermark pada screenshot
+  - Colorama       : Kompatibilitas warna di terminal Windows
+
+Library Opsional:
+  - interactsh     : Integrasi dengan server OOB (Out-of-Band) untuk mendeteksi
+                     kerentanan blind (tidak ada error yang muncul di layar)
+
+Browser Engine:
+  - Chromium (via Playwright) — Digunakan untuk render halaman, screenshot,
+    generate PDF, dan menjalankan JavaScript secara nyata
+
+
+--------------------------------------------------------------------------------
+BAGAIMANA CARA KERJANYA? (ALUR PROGRAM)
+--------------------------------------------------------------------------------
+
+Program ini bekerja dalam 4 fase besar:
+
+  FASE 1 — INTELLIGENCE GATHERING (Pengumpulan Informasi)
+  ─────────────────────────────────────────────────────────
+  Sebelum menyerang, Lilo Tester dulu "membaca" target:
+
+    - Tech Stack Fingerprinting
+      Mendeteksi framework apa yang dipakai target (Laravel, Next.js, Django,
+      dll.) dari header HTTP dan isi DOM halaman.
+
+    - WAF/CDN Detection
+      Mendeteksi apakah target dilindungi oleh firewall (Cloudflare, Akamai,
+      dll.). Jika ada WAF, scanner akan menanya konfirmasi dulu sebelum
+      menyerang agar IP tidak kena banned.
+
+    - Subdomain Enumeration
+      Mencari subdomain yang dimiliki target secara pasif menggunakan data
+      publik dari crt.sh dan HackerTarget. Tidak ada brute-force.
+
+    - Hidden Parameter Discovery
+      Mengirim request dengan 70+ nama parameter umum (?q=, ?id=, ?user=, dll.)
+      dan menganalisis perbedaan ukuran respons untuk menemukan parameter
+      tersembunyi.
+
+    - Endpoint Fuzzing
+      Mencoba akses ke path-path tersembunyi seperti /backup, /.git,
+      /phpmyadmin, /api/v1/users, dan puluhan path umum lainnya untuk melihat
+      mana yang merespons dengan HTTP 200 atau 403.
+
+
+  FASE 2 — VULNERABILITY ANALYSIS (Analisis Kerentanan)
+  ─────────────────────────────────────────────────────────
+  Lilo Tester memeriksa berbagai jenis celah keamanan:
+
+    - XSS (Cross-Site Scripting)
+      Menyuntikkan skrip JavaScript ke dalam input dan URL, lalu memeriksa
+      apakah skrip tersebut dieksekusi oleh browser. Mendukung Reflected XSS,
+      DOM-Based XSS, dan Stored XSS (via OOB).
+
+    - SQL Injection
+      Mencoba payload SQL seperti ' OR '1'='1 dan SLEEP(5). Mendukung
+      Error-Based, Time-Based (dengan pengukuran baseline waktu), dan OOB SQLi.
+
+    - IDOR / BOLA (Insecure Direct Object Reference)
+      Menggunakan dua sesi browser secara bersamaan (attacker + victim) untuk
+      mendeteksi apakah data User A bisa diakses oleh User B tanpa izin.
+
+    - DOM Taint Analysis
+      Menyuntikkan skrip JavaScript secara permanen ke setiap halaman untuk
+      melacak aliran variabel dari sumber berbahaya (misal: URL bar) ke fungsi
+      berbahaya (misal: eval(), innerHTML). Ini mendeteksi DOM-Based XSS.
+
+    - Security Headers
+      Memeriksa 8 header keamanan penting: Content-Security-Policy, HSTS,
+      X-Frame-Options, X-Content-Type-Options, dan lainnya.
+
+    - Cookies
+      Memeriksa apakah cookie session sudah ada flag Secure, HttpOnly, dan
+      SameSite.
+
+    - JWT & Local Storage Analysis
+      Menganalisis token JWT yang tersimpan di browser untuk menemukan algoritma
+      lemah (alg: none, HS256 dengan kunci default). Juga memeriksa data
+      sensitif yang tidak seharusnya ada di localStorage.
+
+    - Sensitive Files
+      Mencoba akses ke 30+ file/direktori sensitif seperti /.env, /phpinfo.php,
+      /.git, /backup.zip, dan lainnya.
+
+    - CORS Misconfiguration
+      Mengirim request dengan Origin palsu untuk memeriksa apakah server
+      membolehkan cross-origin request dari sembarang domain.
+
+    - Dan masih banyak lagi: CSRF, SSRF, Info Disclosure, Directory Listing,
+      SSL/TLS, Clickjacking, Form Security.
+
+
+  FASE 3 — EXPLOITATION (Pembuktian Celah)
+  ─────────────────────────────────────────────────────────
+  Setelah analisis, Lilo Tester membuktikan celah yang ditemukan:
+
+    - Time-Based Verification
+      Untuk SQL Injection buta (blind), program mengukur waktu respons normal
+      terlebih dahulu (3 request baseline), lalu menyuntikkan SLEEP(5). Jika
+      waktu respons bertambah tepat 5 detik ± toleransi 1 detik, celah
+      terkonfirmasi. Ini mencegah false positive akibat internet lambat.
+
+    - OOB (Out-of-Band) Callback Testing
+      Program menghasilkan URL unik via Interactsh (atau server lokal sendiri).
+      URL ini disuntikkan ke target melalui form kontak, parameter, dll. Jika
+      target mengunjungi URL tersebut, berarti ada celah Blind XSS, SSRF,
+      atau OOB SQLi.
+
+    - Mass Assignment Testing (mode khusus, harus aktifkan manual)
+      Menyuntikkan field-field tersembunyi ke request POST/PUT seperti
+      is_admin=true, role=superadmin, balance=99999 untuk mendeteksi apakah
+      server menerima dan memprosesnya.
+      ⚠️ Hanya gunakan di lingkungan testing, bukan produksi!
+
+
+  FASE 4 — REPORTING (Pembuatan Laporan)
+  ─────────────────────────────────────────────────────────
+  Semua temuan dikompilasi menjadi laporan yang dapat langsung dieksekusi:
+
+    - Auto PoC (Proof of Concept)
+      Setiap celah yang terkonfirmasi otomatis dibuatkan perintah curl yang
+      bisa langsung di-copy-paste untuk membuktikan ulang.
+
+    - CVSS Scoring
+      Setiap temuan diberi skor 0.0–10.0 berdasarkan kategori kerentanannya
+      menggunakan mapping statis standar industri.
+
+    - Context-Driven Remediation
+      Saran perbaikan disesuaikan dengan tech stack yang terdeteksi. Misalnya
+      jika target pakai Laravel + SQLi ditemukan, sarannya pakai Eloquent ORM.
+      Jika pakai React + XSS, sarannya hindari dangerouslySetInnerHTML.
+
+    - Laporan HTML interaktif dengan tab (Performance, Security, IDOR, dll.)
+    - Laporan Markdown (.md) untuk GitHub Issues atau Notion
+    - Laporan PDF auto-generate via Playwright Chromium
+    - Laporan JSON lengkap (machine-readable)
+
+
+--------------------------------------------------------------------------------
+FITUR-FITUR TAMBAHAN
+--------------------------------------------------------------------------------
+
+  Deep Crawler (SPA Support)
+  ──────────────────────────
+  Lilo Tester tidak hanya membaca HTML statis. Ia menggunakan browser sungguhan
+  untuk:
+    - Mengeksekusi JavaScript
+    - Mengklik menu, accordion, dropdown untuk membuka halaman tersembunyi
+    - Menelusuri Shadow DOM (untuk komponen Web Components)
+    - Mengekstrak endpoint API dari JavaScript bundle dan source map
+
+  Micro-Interaction Testing
+  ─────────────────────────
+  Menguji 15+ komponen UI secara otomatis:
+    Search input, filter dropdown, pagination, sort button, tab navigation,
+    modal, accordion, form validation, datepicker, checkbox, select dropdown,
+    rich text editor, file upload, data table.
+
+  Advanced Performance Analytics
+  ──────────────────────────────
+  Mengukur performa halaman seperti Lighthouse:
+    - Skor performa 0–100 (Grade A sampai F)
+    - Core Web Vitals: TTFB, FCP, LCP, CLS
+    - Breakdown resource: JS, CSS, Font, Image
+    - Daftar 15 resource paling lambat dan paling besar
+    - Analisis dampak third-party domain
+    - Saran optimasi otomatis
+
+  Screenshot Engine
+  ─────────────────
+  Mengambil screenshot full-page dari:
+    - Hingga 20 halaman yang dikunjungi
+    - Setiap temuan keamanan (sebagai bukti)
+    - Halaman error (untuk debugging)
+  Semua screenshot diberi watermark "Lilo Tester".
+
+  Credential Manager
+  ──────────────────
+  Menyimpan kredensial login secara lokal di ~/.lilo_tester/credentials.json
+  agar tidak perlu memasukkan username/password setiap kali scan.
+
+  WAF-Awareness
+  ─────────────
+  Jika WAF/CDN terdeteksi, scanner otomatis menghentikan fuzzing agresif dan
+  menampilkan prompt konfirmasi. Bisa dilewati dengan --ignore-waf.
+
+
+--------------------------------------------------------------------------------
+MODE SCAN
+--------------------------------------------------------------------------------
+
+  dashboard    Scan penuh dengan autentikasi. Crawl hingga 50 halaman.
+               Cocok untuk ERP, CRM, admin panel.
+
+  public       Scan tanpa login. Crawl hingga 10 halaman.
+               Cocok untuk website publik.
+
+  performance  Hanya analisis performa. Tanpa security scan.
+               Cocok untuk audit kecepatan website.
+
+  security     Hanya security audit. Tanpa crawl penuh.
+               Cocok untuk pentest cepat.
+
+  quick        Scan minimal. Hanya cek dasar dan performa ringan.
+               Cocok untuk CI/CD pipeline.
+
+
+--------------------------------------------------------------------------------
+FORMAT OUTPUT
+--------------------------------------------------------------------------------
+
+  Semua laporan disimpan di folder: lilo_reports/report_YYYY-MM-DD_HH-MM-SS/
+
+    report.html     Laporan interaktif dengan tab, dapat dibuka di browser
+    report.md       Laporan teks untuk GitHub, Notion, Confluence
+    report.pdf      PDF auto-generate dari HTML (via Playwright Chromium)
+    report.json     Data mentah semua hasil (machine-readable)
+    screenshots/    Folder berisi semua screenshot yang diambil
+
+
+--------------------------------------------------------------------------------
+CONTOH PENGGUNAAN
+--------------------------------------------------------------------------------
+
+  # Scan penuh dengan login otomatis
+  liloit -u https://example.com
+
+  # Scan publik tanpa login
+  liloit -u https://example.com -m public
+
+  # Security-only scan
+  liloit -u https://example.com -m security
+
+  # Scan cepat untuk CI/CD
+  liloit -u https://staging.example.com -m quick --headless --no-open
+
+  # Dengan custom login URL
+  liloit -u https://app.com --login-url /admin/login
+
+  # IDOR testing dengan akun victim
+  liloit -u https://app.com --enable-idor --idor-user victim:password123
+
+  # Paksa scan meski ada WAF
+  liloit -u https://waf-site.com --ignore-waf
+
+  # Business Logic testing (hati-hati, bisa mengubah data!)
+  liloit -u https://testenv.example.com --enable-mass-assign
+
+
+--------------------------------------------------------------------------------
+HAL YANG PERLU DIKETAHUI
+--------------------------------------------------------------------------------
+
+  1. AMAN untuk dipakai di produksi (mode default)
+     Safe Mode aktif secara otomatis. Hanya request GET yang diizinkan.
+     POST, PUT, DELETE diblokir selama crawling. Tidak ada data yang diubah.
+
+  2. --enable-mass-assign WAJIB hati-hati
+     Flag ini menonaktifkan Safe Mode untuk endpoint tertentu. Gunakan HANYA
+     di lingkungan testing/staging, BUKAN di produksi.
+
+  3. Berjalan 100% lokal
+     Tidak ada data scan yang keluar ke internet, kecuali:
+       - Request ke URL target yang sedang diuji
+       - Subdomain lookup (crt.sh, HackerTarget) — read-only, pasif
+       - OOB callback ke Interactsh (bisa diganti server sendiri)
+
+  4. Mendukung semua framework modern
+     Playwright menggunakan browser nyata, jadi apapun yang bisa dibuka
+     Chrome bisa di-scan: React, Vue, Angular, Next.js, Laravel, WordPress, dll.
+
+  5. Interactsh opsional
+     Jika tidak terinstall, OOB testing fallback ke server lokal (aiohttp).
+     Semua fitur lain tetap berjalan normal.
+
+
+================================================================================
+   lilo TESTER v5.0.0 — Deep DAST & Advanced Web Security Scanner
+   Dibuat untuk developer dan security researcher yang ingin semuanya
+   cukup dengan satu perintah.
+================================================================================

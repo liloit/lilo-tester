@@ -12,3 +12,13 @@ venv/
 Thumbs.db
 lilo_reports/
 *.log
+
+# Temp refactor/dev scripts
+refactor.py
+refactor_help.py
+
+# Release archives
+*.zip
+
+# Local dev notes
+scratch/
