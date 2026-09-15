@@ -218,7 +218,7 @@ SPA • Static HTML • ERP • CRM
 **Clone and install:**
 
 ```bash
-git clone https://github.com/yourusername/lilo-tester.git
+git clone https://github.com/liloit/lilo-tester.git
 cd lilo-tester
 pip install -r requirements.txt
 python -m playwright install chromium
@@ -256,7 +256,7 @@ liloit -u https://staging.example.com --headless --no-open --sarif
 <summary>🪟 Windows</summary>
 
 ```powershell
-git clone https://github.com/yourusername/lilo-tester.git
+git clone https://github.com/liloit/lilo-tester.git
 cd lilo-tester
 pip install -r requirements.txt
 python -m playwright install chromium
@@ -272,7 +272,7 @@ liloit -u https://example.com
 
 ```bash
 brew install python@3.12
-git clone https://github.com/yourusername/lilo-tester.git
+git clone https://github.com/liloit/lilo-tester.git
 cd lilo-tester
 pip3 install -r requirements.txt
 python3 -m playwright install chromium
@@ -288,7 +288,7 @@ liloit -u https://example.com
 
 ```bash
 sudo apt update && sudo apt install python3 python3-pip -y
-git clone https://github.com/yourusername/lilo-tester.git
+git clone https://github.com/liloit/lilo-tester.git
 cd lilo-tester
 pip install -r requirements.txt
 python3 -m playwright install chromium
